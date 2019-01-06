@@ -3,6 +3,20 @@ import './css/pure-min.css';
 import './css/side-menu.css';
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      authorList: [
+        {
+          name: 'Alberto',
+          email: 'alberto.souza@caelum.com.br',
+          senha: '123456'
+        }
+      ]
+    };
+  }
+
   render() {
     return (
       <div id="layout">
@@ -11,12 +25,12 @@ class App extends Component {
         </a>
         <div id="menu">
           <div className="pure-menu">
-            <a className="pure-menu-heading" href="#">Company</a>
+            <a className="pure-menu-heading" href="/">Company</a>
 
             <ul className="pure-menu-list">
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Author</a></li>
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Book</a></li>
+                <li className="pure-menu-item"><a href="/" className="pure-menu-link">Home</a></li>
+                <li className="pure-menu-item"><a href="/" className="pure-menu-link">Author</a></li>
+                <li className="pure-menu-item"><a href="/" className="pure-menu-link">Book</a></li>
             </ul>
           </div>
         </div>
@@ -55,10 +69,16 @@ class App extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Alberto</td>                
-                      <td>alberto.souza@caelum.com.br</td>                
-                    </tr>
+                    {
+                      this.state.authorList.map(author => {
+                        return (
+                          <tr>
+                            <td>{author.name}</td>                
+                            <td>{author.email}</td>                
+                          </tr>
+                        );
+                      })
+                    }
                   </tbody>
                 </table> 
             </div>
