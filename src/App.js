@@ -7,17 +7,52 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { authorList: [] };
+    this.state = { authorList: [], name:'', email:'', password:'' };
+    this.sendForm = this.sendForm.bind(this);
+    this.setName = this.setName.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setPassword = this.setPassword.bind(this);
   }
 
   componentDidMount() {
     $.ajax({
-      url:"http://cdc-react.herokuapp.com/api/autores",
+      url:'http://cdc-react.herokuapp.com/api/autores',
       dataType: 'json',
       success: response => {
         this.setState({ authorList: response });
       }
     });
+  }
+
+  sendForm(event) {
+    event.preventDefault(); 
+    
+    $.ajax({
+      url: 'http://cdc-react.herokuapp.com/api/autores',
+      contentType: 'application/json',
+      dataType: 'json',
+      type: 'post',
+      data: JSON.stringify({nome:this.state.name, email:this.state.email, senha:this.state.password}),
+      success: response => {
+        console.log(response);
+        this.setState({authorList:response});
+      },
+      error: response => {
+        console.log(response);
+      }
+    });
+  }
+
+  setName(event) {
+    this.setState({name:event.target.value});
+  }
+
+  setEmail(event) {
+    this.setState({email:event.target.value});
+  }
+
+  setPassword(event) {
+    this.setState({password:event.target.value});
   }
 
   render() {
@@ -44,18 +79,18 @@ class App extends Component {
           </div>
           <div className="content" id="content">
             <div className="pure-form pure-form-aligned">
-              <form className="pure-form pure-form-aligned">
+              <form className="pure-form pure-form-aligned" onSubmit={this.sendForm}>
                 <div className="pure-control-group">
                   <label htmlFor="name">Name</label>
-                  <input id="name" type="text" name="name" value=""  />
+                  <input id="name" type="text" name="name" value={this.state.name} onChange={this.setName} />
                 </div>
                 <div className="pure-control-group">
                   <label htmlFor="email">Email</label>
-                  <input id="email" type="email" name="email" value=""  />
+                  <input id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail}/>
                 </div>
                 <div className="pure-control-group">
                   <label htmlFor="password">Password</label>
-                  <input id="password" type="password" name="password"  />
+                  <input id="password" type="password" name="password" value={this.state.password} onChange={this.setPassword}/>
                 </div>
                 <div className="pure-control-group">
                   <label></label>
