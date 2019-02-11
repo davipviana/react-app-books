@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PubSub from 'pubsub-js';
 import $ from 'jquery';
 import CustomizedInput from './components/CustomizedInput';
 
@@ -24,7 +24,7 @@ class AuthorForm extends Component {
             data: JSON.stringify({nome:this.state.name, email:this.state.email, senha:this.state.password}),
             success: response => {
                 console.log(response);
-                this.props.refreshListCallback(response);
+                PubSub.publish('refresh-author-list', response);
             },
             error: response => {
                 console.log(response);
@@ -104,16 +104,16 @@ export default class AuthorBox extends Component {
             this.setState({ authorList: response });
             }
         });
-    }
 
-    refreshList = (newList) => {
-        this.setState({authorList:newList})
+        PubSub.subscribe('refresh-author-list', (topic, newList) => {
+            this.setState({ authorList: newList });
+        })
     }
 
     render = () => {
         return (
             <div>
-                <AuthorForm refreshListCallback={this.refreshList} />
+                <AuthorForm />
                 <AuthorTable authorList={this.state.authorList}/>
             </div>
         );
