@@ -1,60 +1,10 @@
 import React, { Component } from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css';
-import $ from 'jquery';
-import CustomizedInput from './components/CustomizedInput';
+
+import AuthorBox from './Author';
 
 class App extends Component {
-
-  constructor() {
-    super();
-    this.state = { authorList: [], name:'', email:'', password:'' };
-    this.sendForm = this.sendForm.bind(this);
-    this.setName = this.setName.bind(this);
-    this.setEmail = this.setEmail.bind(this);
-    this.setPassword = this.setPassword.bind(this);
-  }
-
-  componentDidMount() {
-    $.ajax({
-      url:'http://cdc-react.herokuapp.com/api/autores',
-      dataType: 'json',
-      success: response => {
-        this.setState({ authorList: response });
-      }
-    });
-  }
-
-  sendForm(event) {
-    event.preventDefault(); 
-    
-    $.ajax({
-      url: 'http://cdc-react.herokuapp.com/api/autores',
-      contentType: 'application/json',
-      dataType: 'json',
-      type: 'post',
-      data: JSON.stringify({nome:this.state.name, email:this.state.email, senha:this.state.password}),
-      success: response => {
-        console.log(response);
-        this.setState({authorList:response});
-      },
-      error: response => {
-        console.log(response);
-      }
-    });
-  }
-
-  setName(event) {
-    this.setState({name:event.target.value});
-  }
-
-  setEmail(event) {
-    this.setState({email:event.target.value});
-  }
-
-  setPassword(event) {
-    this.setState({password:event.target.value});
-  }
 
   render() {
     return (
@@ -79,39 +29,7 @@ class App extends Component {
             <h1>Author Register</h1>
           </div>
           <div className="content" id="content">
-            <div className="pure-form pure-form-aligned">
-              <form className="pure-form pure-form-aligned" onSubmit={this.sendForm}>
-                <CustomizedInput id="name" type="text" name="name" value={this.state.name} onChange={this.setName} label="Name" />
-                <CustomizedInput id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
-                <CustomizedInput id="password" type="password" name="password" value={this.state.password} onChange={this.setPassword} label="Password" />
-                <div className="pure-control-group">
-                  <label></label>
-                  <button type="submit" className="pure-button pure-button-primary">Send</button>
-                </div>
-              </form>
-            </div>
-            <div>
-            <table className="pure-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      this.state.authorList.map(author => {
-                        return (
-                          <tr key={author.id}>
-                            <td>{author.nome}</td>                
-                            <td>{author.email}</td>                
-                          </tr>
-                        );
-                      })
-                    }
-                  </tbody>
-                </table> 
-            </div>
+            <AuthorBox />
           </div>
         </div>
       </div>
