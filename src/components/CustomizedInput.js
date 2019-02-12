@@ -11,8 +11,10 @@ export default class CustomizedInput extends Component {
         PubSub.subscribe('validation-error', (topic, error) => {
             if(error.field === this.props.name)
                 this.setState({errorMessage:error.defaultMessage})
-            else
-                console.log(error.field)
+        })
+
+        PubSub.subscribe('clear-validation-errors', (topic) => {
+            this.setState({errorMessage:''})
         })
     }
 

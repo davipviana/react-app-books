@@ -32,7 +32,10 @@ class AuthorForm extends Component {
                 if(response.status === 400) {
                     new ErrorHandler().publishErrors(response.responseJSON)
                 }
-            }
+            },
+            beforeSend: () => {
+                PubSub.publish('clear-validation-errors',{});
+            } 
         });
     }
     
