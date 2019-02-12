@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PubSub from 'pubsub-js';
 import $ from 'jquery';
 import CustomizedInput from './components/CustomizedInput';
+import ErrorHandler from './ErrorHandler'
 
 class AuthorForm extends Component {
     constructor() {
@@ -25,9 +26,12 @@ class AuthorForm extends Component {
             success: response => {
                 console.log(response);
                 PubSub.publish('refresh-author-list', response);
+                this.setState({name:'', email:'', password:''})
             },
             error: response => {
-                console.log(response);
+                if(response.status === 400) {
+                    new ErrorHandler().publishErrors(response.responseJSON)
+                }
             }
         });
     }
@@ -48,9 +52,9 @@ class AuthorForm extends Component {
         return (
             <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.sendForm}>
-                    <CustomizedInput id="name" type="text" name="name" value={this.state.name} onChange={this.setName} label="Name" />
+                    <CustomizedInput id="name" type="text" name="nome" value={this.state.name} onChange={this.setName} label="Name" />
                     <CustomizedInput id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
-                    <CustomizedInput id="password" type="password" name="password" value={this.state.password} onChange={this.setPassword} label="Password" />
+                    <CustomizedInput id="password" type="password" name="senha" value={this.state.password} onChange={this.setPassword} label="Password" />
                     <div className="pure-control-group">
                         <label></label>
                         <button type="submit" className="pure-button pure-button-primary">Send</button>
