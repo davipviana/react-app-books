@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 import AuthorBox from './Author';
+import BookBox from './Book';
 import Home from './Home';
 
 ReactDOM.render(
@@ -12,7 +13,7 @@ ReactDOM.render(
         <Route path="/" component={App}>
             <IndexRoute component={Home}/>
             <Route path="/author" component={AuthorBox}/>
-            <Route path="/book" />
+            <Route path="/book" component={BookBox}/>
         </Route>
     </Router>)
     , document.getElementById('root')
