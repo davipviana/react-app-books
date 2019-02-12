@@ -9,9 +9,6 @@ class AuthorForm extends Component {
         super();
         this.state = { name:'', email:'', password:'' };
         this.sendForm = this.sendForm.bind(this);
-        this.setName = this.setName.bind(this);
-        this.setEmail = this.setEmail.bind(this);
-        this.setPassword = this.setPassword.bind(this);
     }
 
     sendForm(event) {
@@ -39,25 +36,19 @@ class AuthorForm extends Component {
         });
     }
     
-    setName(event) {
-        this.setState({name:event.target.value});
-    }
-
-    setEmail(event) {
-        this.setState({email:event.target.value});
-    }
-
-    setPassword(event) {
-        this.setState({password:event.target.value});
+    setFieldValue(fieldName, event) {
+        let field = {};
+        field[fieldName] = event.target.value;
+        this.setState(field);
     }
 
     render = () => {
         return (
             <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.sendForm}>
-                    <CustomizedInput id="name" type="text" name="nome" value={this.state.name} onChange={this.setName} label="Name" />
-                    <CustomizedInput id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
-                    <CustomizedInput id="password" type="password" name="senha" value={this.state.password} onChange={this.setPassword} label="Password" />
+                    <CustomizedInput id="name" type="text" name="nome" value={this.state.name} onChange={this.setFieldValue.bind(this, 'name')} label="Name" />
+                    <CustomizedInput id="email" type="email" name="email" value={this.state.email} onChange={this.setFieldValue.bind(this, 'email')} label="Email" />
+                    <CustomizedInput id="password" type="password" name="senha" value={this.state.password} onChange={this.setFieldValue.bind(this, 'password')} label="Password" />
                     <div className="pure-control-group">
                         <label></label>
                         <button type="submit" className="pure-button pure-button-primary">Send</button>
